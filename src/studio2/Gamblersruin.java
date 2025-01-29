@@ -8,28 +8,59 @@ public class Gamblersruin {
 		Scanner in = new Scanner(System.in);
 		double gamble = 0;
 		int money = 2;
+		int startamount = 2;
+		double losses = 0;
+		int wins = 0;
+		int winlimit = 10;
+
+		double winchance = 70;
 		System.out.println("To start you have " + money + " dollars now.");
-		while (money > 0 && money < 10) {
+		double simulation = 0; 
+		for (int i = 0; i < 500; i++) {
+			simulation ++;
+		while (money > 0 && money < winlimit) {
 			gamble = Math.random( )*100;
-			boolean win = gamble < 51;
+			boolean win = gamble <= winchance;
 			if (win == true){
 				money = money + 1;
-				System.out.println("You won! You have " + money + " dollars now.");
+
 			}
 			else {
-				money = money - 1;
-				System.out.println("You lost. You have " + money + " dollars now.");
-
+				money = money - 1;;
 			}
-		}
+			}
+			
 		if (money == 10) {
-			System.out.println("Success");
+			wins++;
 		}
 		if (money == 0) {
-			System.out.println("Failure");
+			losses++;
+			
+			
+			
 		}
-	}
+		money = 2;
+		System.out.println("Simulation " + i + ":" );
+		System.out.println(wins + " wins");
+		System.out.println(losses + " losses");
 
+		}
+		System.out.println("Total simulations " + simulation + ":" );
+		System.out.println(wins + " total wins");
+		System.out.println(losses + " total losses");
+		double actualruinrate = losses/simulation;
+		System.out.println("Ruin rate: " + actualruinrate );
+		if (winchance == 50) {
+			double ruinrate = (1-(startamount/winlimit));
+			System.out.println("Expected ruin rate: " + ruinrate );
+		}
+		else {
+			double a = ((1-(winchance/100))/(winchance/100));
+			double ruinrate = ((Math.pow(a,startamount) - Math.pow(a,winlimit))/ (1-Math.pow(a,winlimit)));
+			System.out.println("Expected ruin rate: " + ruinrate );
+		}
+	}	
+	
 }
 /*
 startAmount
